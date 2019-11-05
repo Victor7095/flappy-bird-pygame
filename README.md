@@ -12,3 +12,4 @@
 
 - [Plano de fundo estático](https://www.pinterest.it/pin/303430093618641114/)
 - [Chão em movimento](https://pngimage.net/flappy-bird-background-png-3/)
+- [Assets restantes - FlapPyBird](https://github.com/sourabhv/FlapPyBird/tree/master/assets)

@@ -20,10 +20,10 @@ def redraw():
 
 
 def generate_pipe():
-    pipe_height_key = randint(4, 8)
+    pipe_height_key = randint(4, 9)
     pipe = {
-        "upper": -pipe_height_key*20,
-        "lower": -pipe_height_key*20+430,
+        "upper": -pipe_height_key*30,
+        "lower": -pipe_height_key*30+430,
         "x": background.get_width()}
     return pipe
 

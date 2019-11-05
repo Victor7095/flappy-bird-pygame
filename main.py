@@ -1,5 +1,6 @@
 """ Flappy Bird """
 import pygame as pg
+from random import randint
 
 SPEED = 60
 SPRITES_DIR = "assets/images/"
@@ -15,6 +16,14 @@ def redraw():
     pg.display.update()
 
 
+def generate_pipe():
+    pipe_height_key = randint(4, 9)
+    pipe = {
+        "upper": -pipe_height_key*30,
+        "lower": -pipe_height_key*30+430,
+        "x": background.get_width()}
+    return pipe
+
 
 pg.init()
 pg.display.set_caption("Flappy Bird")
@@ -25,9 +34,9 @@ screen = pg.display.set_mode((288, 512))
 background = pg.image.load(
     SPRITES_DIR+"background-day.png").convert_alpha()
 player = pg.image.load(SPRITES_DIR+"redbird-midflap.png").convert_alpha()
-birdSprite = [SPRITES_DIR+"redbird-upflap.png", 
-              SPRITES_DIR+"redbird-midflap.png", 
-              SPRITES_DIR+"redbird-downflap.png", 
+birdSprite = [SPRITES_DIR+"redbird-upflap.png",
+              SPRITES_DIR+"redbird-midflap.png",
+              SPRITES_DIR+"redbird-downflap.png",
               SPRITES_DIR+"redbird-midflap.png"]
 sprite = 0
 x = 0
@@ -59,7 +68,7 @@ while running:
         ground_x = ground.get_width()
     if ground_x2 <= ground.get_width()*-1:
         ground_x2 = ground.get_width()
-    if x == 10: #if x == 10 and playerIsAlive == True: (idle/ menu animation)
+    if x == 10:  # if x == 10 and playerIsAlive == True: (idle/ menu animation)
         player = pg.image.load(birdSprite[sprite])
         sprite = (sprite + 1) % len(birdSprite)
         x = 0

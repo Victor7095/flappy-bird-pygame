@@ -1,10 +1,13 @@
 """ Flappy Bird """
 import pygame as pg
 
-screen, clock, background, ground = [None]*4
+screen, clock, background, ground, player = [None]*5
 speed = 30
 ground_x = ground_x2 = 0
 running = False
+
+SPRITES_DIR = "assets/images/"
+AUDIO_DIR = "assets/audio/"
 
 
 def redraw():
@@ -12,22 +15,28 @@ def redraw():
     screen.blit(background, (0, 0))
     screen.blit(ground, (ground_x, 790))
     screen.blit(ground, (ground_x2, 790))
+    screen.blit(player, (100, 450))
     pg.display.update()
 
 
 def main():
     """Main function"""
-    global screen, background, clock, ground, ground_x, ground_x2, running
+    global screen, background, clock, ground, ground_x, ground_x2, running, player
     pg.init()
     pg.display.set_caption("Flappy Bird")
     clock = pg.time.Clock()
 
     screen = pg.display.set_mode((640, 980))
-    background = pg.image.load("assets/static-bg.jpg")
+    background = pg.image.load(SPRITES_DIR+"static-bg.jpg")
 
-    ground = pg.transform.scale(pg.image.load("assets/ground.png"), (772, 224))
+    ground = pg.transform.scale(pg.image.load(
+        SPRITES_DIR+"ground.png"), (772, 224))
     ground_x = 0
     ground_x2 = ground.get_width()
+
+    player = pg.transform.scale(pg.image.load(
+        SPRITES_DIR+"redbird-midflap.png"), (102, 72))
+
     running = True
     while running:
         redraw()

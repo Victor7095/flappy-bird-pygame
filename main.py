@@ -20,11 +20,11 @@ def redraw():
 
 
 def generate_pipe():
-    pipe_height_key = randint(0, 10)
+    pipe_height_key = randint(4, 8)
     pipe = {
         "upper": -pipe_height_key*20,
-        "lower": -pipe_height_key*20+390,
-        "x": ground.get_width()}
+        "lower": -pipe_height_key*20+430,
+        "x": background.get_width()}
     return pipe
 
 
@@ -49,14 +49,14 @@ pipe_sprite_inverted = pg.transform.flip(
 
 ground_x = 0
 ground_x2 = ground.get_width()
-pipes = []
+pipes = [generate_pipe()]
 
 running = True
 while running:
     redraw()
     x += 1
-    ground_x -= 4
-    ground_x2 -= 4
+    ground_x -= 3
+    ground_x2 -= 3
     if ground_x <= ground.get_width()*-1:
         ground_x = ground.get_width()
     if ground_x2 <= ground.get_width()*-1:
@@ -67,12 +67,11 @@ while running:
         x = 0
 
     for pipe in pipes:
-        pipe["x"] -= 4
+        pipe["x"] -= 3
 
-    if len(pipes) > 0 and pipes[0]["x"] <= ground.get_width()*-1:
+    if pipes[0]["x"] <= background.get_width()*-1:
         pipes.pop(0)
-        pipes.append(generate_pipe())
-    elif len(pipes) == 0:
+    if pipes[-1]["x"] == 108:
         pipes.append(generate_pipe())
 
     for event in pg.event.get():

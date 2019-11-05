@@ -30,11 +30,12 @@ birdSprite = [SPRITES_DIR+"redbird-upflap.png",
               SPRITES_DIR+"redbird-downflap.png", 
               SPRITES_DIR+"redbird-midflap.png"]
 sprite = 0
-x = 1
+x = 0
+y = 0
 ground = pg.image.load(SPRITES_DIR+"base.png").convert_alpha()
 
 global y_speed, player_position
-y_speed = 10
+y_speed = 0
 player_position = 60
 ground_x = 0
 ground_x2 = ground.get_width()
@@ -44,10 +45,13 @@ while running:
     redraw()
 
     x += 1
-    if y_speed > -12:
-        y_speed -= 1
-        if y_speed == -12:
-            y_speed = 10
+    y += 1
+    if y == 2:
+        y = 0
+        if y_speed >= -8:
+            y_speed -= 1
+        if y_speed < -8:
+            y_speed = 8
     player_position = player_position - y_speed
     ground_x -= 4
     ground_x2 -= 4

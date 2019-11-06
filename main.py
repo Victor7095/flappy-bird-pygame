@@ -33,12 +33,14 @@ screen = pg.display.set_mode((288, 512))
 
 background = pg.image.load(
     SPRITES_DIR+"background-day.png").convert_alpha()
-player = pg.image.load(SPRITES_DIR+"redbird-midflap.png").convert_alpha()
+original_player = pg.image.load(SPRITES_DIR+"redbird-downflap.png").convert_alpha()
+player = original_player
 birdSprite = [SPRITES_DIR+"redbird-upflap.png",
               SPRITES_DIR+"redbird-midflap.png",
               SPRITES_DIR+"redbird-downflap.png",
               SPRITES_DIR+"redbird-midflap.png"]
 sprite = 0
+angle = 0
 x = 0
 y = 0
 ground = pg.image.load(SPRITES_DIR+"base.png").convert_alpha()
@@ -54,10 +56,12 @@ while running:
 
     x += 1
     y += 1
+    player = pg.transform.rotate(original_player, angle)
     if y == 2:
         y = 0
         if y_speed >= -8:
             y_speed -= 1
+            angle = (angle - 9) % 360
     player_position = player_position - y_speed
     ground_x -= 4
     ground_x2 -= 4
@@ -65,8 +69,8 @@ while running:
         ground_x = ground.get_width()
     if ground_x2 <= ground.get_width()*-1:
         ground_x2 = ground.get_width()
-    if x == 10:  # if x == 10 and playerIsAlive == True: (idle/ menu animation)
-        player = pg.image.load(birdSprite[sprite])
+    if x == 5:  # if x == 10 and playerIsAlive == True: (idle/ menu animation)
+        original_player = pg.image.load(birdSprite[sprite])
         sprite = (sprite + 1) % len(birdSprite)
         x = 0
     for event in pg.event.get():
@@ -75,5 +79,8 @@ while running:
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_SPACE:
                 y_speed = 8
+                angle = 60
+
+
 
     clock.tick(SPEED)

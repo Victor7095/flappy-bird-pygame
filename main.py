@@ -21,10 +21,21 @@ ground = pg.image.load(SPRITES_DIR+"base.png").convert_alpha()
 pipe_sprite = pg.image.load(SPRITES_DIR+"pipe-green.png").convert_alpha()
 pipe_sprite_inverted = pg.transform.flip(
     pg.image.load(SPRITES_DIR+"pipe-green.png").convert_alpha(), False, True)
+score = pg.image.load(SPRITES_DIR+"0.png").convert_alpha()
 birdSprite = [SPRITES_DIR+"redbird-upflap.png",
               SPRITES_DIR+"redbird-midflap.png",
               SPRITES_DIR+"redbird-downflap.png",
               SPRITES_DIR+"redbird-midflap.png"]
+scoreSprite = [SPRITES_DIR+"0.png",
+               SPRITES_DIR+"1.png",
+               SPRITES_DIR+"2.png",
+               SPRITES_DIR+"3.png",
+               SPRITES_DIR+"4.png",
+               SPRITES_DIR+"5.png",
+               SPRITES_DIR+"6.png",
+               SPRITES_DIR+"7.png",
+               SPRITES_DIR+"8.png",
+               SPRITES_DIR+"9.png"]
 ground = pg.image.load(SPRITES_DIR+"base.png").convert_alpha()
 
 ground_x = 0
@@ -53,6 +64,8 @@ def redraw_menu():
     screen.blit(menu_sp, ((background.get_width() - menu_sp.get_width())/2,
                           (background.get_height() - menu_sp.get_height())/2))
 
+def redraw_score():
+    screen.blit(score, (125, 10))
 
 def redraw_game_over(player, player_position):
     screen.blit(background, (0, 0))
@@ -113,9 +126,11 @@ def game_menu():
 def main_game():
     original_player = pg.image.load(
         SPRITES_DIR+"redbird-downflap.png").convert_alpha()
+    score = pg.image.load(
+        SPRITES_DIR+"0.png").convert_alpha()
     player = original_player
     player_position = 60
-    sprite = angle = timer1 = timer2 = y_speed = 0
+    sprite = angle = timer1 = timer2 = y_speed = score_counter = 0
     DidPlayerHitPipe = False
 
     pipes.clear()
@@ -126,6 +141,7 @@ def main_game():
         screen.blit(background, (0, 0))
         redraw_pipes()
         redraw_ground()
+        redraw_score()
         screen.blit(player, (60, player_position))
         pg.display.update()
 
@@ -165,11 +181,13 @@ def main_game():
         elif DidPlayerHitPipe and player_position >= 375:
             return (player, player_position)
 
-        # Geração do próximo tubo
+        # Geração do próximo tubo / pontuaçao
         if pipes[0]["x"] <= background.get_width()*-1:
             pipes.pop(0)
         if pipes[-1]["x"] == 108:
             pipes.append(generate_pipe())
+            score_counter = (score_counter +1) % len(scoreSprite)
+            score = pg.image.load(scoreSprite[score_counter])
 
         for event in pg.event.get():
             # Sair ao clicar no X ou pressionar ESC
@@ -177,7 +195,6 @@ def main_game():
                                       event.key == K_ESCAPE):
                 stop()
             if event.type == pg.KEYDOWN:
-                # insira aqui a condiçao de vida do passaro
                 if(event.key == pg.K_SPACE and
                    0 < player_position < 375 and
                    not DidPlayerHitPipe):

@@ -48,7 +48,6 @@ y_speed = 0
 player_position = 60
 ground_x = 0
 ground_x2 = ground.get_width()
-
 running = True
 while running:
     redraw()
@@ -59,8 +58,6 @@ while running:
         y = 0
         if y_speed >= -8:
             y_speed -= 1
-        if y_speed < -8:
-            y_speed = 8
     player_position = player_position - y_speed
     ground_x -= 4
     ground_x2 -= 4
@@ -75,5 +72,8 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                y_speed = 8
 
     clock.tick(SPEED)

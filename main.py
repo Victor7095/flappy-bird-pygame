@@ -102,10 +102,11 @@ def main_game():
             if y_speed >= -8:
                 y_speed -= 1
                 angle = (angle - 9) % 360
-        player_position = player_position - y_speed
+        if player_position <= 375:
+            player_position = player_position - y_speed
 
         # if x == 10 and playerIsAlive == True: (idle/ menu animation)
-        if x == 5:
+        if x == 5 and player_position <= 375:
             original_player = pg.image.load(birdSprite[sprite])
             sprite = (sprite + 1) % len(birdSprite)
             x = 0
@@ -132,7 +133,9 @@ def main_game():
             if event.type == pg.QUIT:
                 stop()
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
+                # insira aqui a condiçao de vida do passaro
+                # and birdAlive == True
+                if event.key == pg.K_SPACE and 0 < player_position < 375:
                     y_speed = 8
                     angle = 60
 

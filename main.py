@@ -77,6 +77,8 @@ def main_game():
     ground_x = 0
     ground_x2 = ground.get_width()
 
+    DidPlayerHitPipe = False
+
     pipes = [generate_pipe()]
 
     while True:
@@ -109,17 +111,26 @@ def main_game():
             sprite = (sprite + 1) % len(birdSprite)
             timer1 = 0
 
+        # condição de morte pelos tubos
+        for pipe in pipes:
+            if 30 <= pipe["x"] <= 90 and (
+            pipe["lower"] - 35 <= player_position or 
+            pipe["upper"] + 310 >= player_position):
+                DidPlayerHitPipe = True
+
         # Movimentação do background
-        ground_x -= 4
-        ground_x2 -= 4
+        if DidPlayerHitPipe == False:
+            ground_x -= 4
+            ground_x2 -= 4
         if ground_x <= ground.get_width()*-1:
             ground_x = ground.get_width()
         if ground_x2 <= ground.get_width()*-1:
             ground_x2 = ground.get_width()
 
         # Movimentação dos tubos
-        for pipe in pipes:
-            pipe["x"] -= 3
+        if DidPlayerHitPipe == False:
+            for pipe in pipes:
+                pipe["x"] -= 3
 
         # Geração do próximo tubo
         if pipes[0]["x"] <= background.get_width()*-1:
@@ -132,8 +143,7 @@ def main_game():
                 stop()
             if event.type == pg.KEYDOWN:
                 # insira aqui a condiçao de vida do passaro
-                # and birdAlive == True
-                if event.key == pg.K_SPACE and 0 < player_position < 375:
+                if event.key == pg.K_SPACE and 0 < player_position < 375 and DidPlayerHitPipe == False:
                     y_speed = 7
                     angle = 60
 

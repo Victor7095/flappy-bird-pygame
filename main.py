@@ -62,23 +62,24 @@ while running:
         if y_speed >= -8:
             y_speed -= 1
             angle = (angle - 9) % 360
-    player_position = player_position - y_speed
-    ground_x -= 4
+    if player_position <= 375:
+        player_position = player_position - y_speed
+    ground_x -= 4 
     ground_x2 -= 4
     if ground_x <= ground.get_width()*-1:
         ground_x = ground.get_width()
     if ground_x2 <= ground.get_width()*-1:
         ground_x2 = ground.get_width()
-    if x == 5:  # if x == 10 and playerIsAlive == True: (idle/ menu animation)
+    if x == 5 and player_position <= 375:
         original_player = pg.image.load(birdSprite[sprite])
-        sprite = (sprite + 1) % len(birdSprite)
+        sprite = (sprite + 1) % len(birdSprite) 
         x = 0
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
         if event.type == pg.KEYDOWN:
-            if event.key == pg.K_SPACE:
-                y_speed = 8
+            if event.key == pg.K_SPACE and 0 < player_position < 375: #insira aqui a condiçao de vida do passaro
+                y_speed = 8                                           #and birdAlive == True
                 angle = 60
 
 

@@ -72,11 +72,7 @@ def main_game():
         SPRITES_DIR+"redbird-downflap.png").convert_alpha()
     player = original_player
     player_position = 60
-    sprite = 0
-    angle = 0
-    x = 0
-    y = 0
-    y_speed = 0
+    sprite = angle = timer1 = timer2 = y_speed = 0
 
     ground_x = 0
     ground_x2 = ground.get_width()
@@ -94,22 +90,24 @@ def main_game():
         screen.blit(player, (60, player_position))
         pg.display.update()
 
-        x += 1
-        y += 1
-        player = pg.transform.rotate(original_player, angle)
-        if y == 2:
-            y = 0
-            if y_speed >= -8:
+        timer1 += 1
+        timer2 += 1
+        
+        # Animação de queda
+        if timer2 == 2:
+            timer2 = 0
+            if y_speed >= -6:
                 y_speed -= 1
                 angle = (angle - 9) % 360
         if player_position <= 375:
             player_position = player_position - y_speed
+        player = pg.transform.rotate(original_player, angle)
 
-        # if x == 10 and playerIsAlive == True: (idle/ menu animation)
-        if x == 5 and player_position <= 375:
+        # Tempo da animação de voo
+        if timer1 == 5 and player_position <= 375:
             original_player = pg.image.load(birdSprite[sprite])
             sprite = (sprite + 1) % len(birdSprite)
-            x = 0
+            timer1 = 0
 
         # Movimentação do background
         ground_x -= 4
@@ -136,7 +134,7 @@ def main_game():
                 # insira aqui a condiçao de vida do passaro
                 # and birdAlive == True
                 if event.key == pg.K_SPACE and 0 < player_position < 375:
-                    y_speed = 8
+                    y_speed = 7
                     angle = 60
 
         clock.tick(SPEED)
